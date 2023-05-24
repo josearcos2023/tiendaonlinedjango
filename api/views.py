@@ -28,3 +28,7 @@ class CategoriaDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
+    
+class ProductoView(generics.ListAPIView):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
