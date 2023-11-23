@@ -25,10 +25,36 @@ class CategoriaDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg  = 'categoria_id'
     serializer_class = CategoriaSerializer
     
-class ProductoViewSet(viewsets.ModelViewSet):
-    queryset = Producto.objects.all()
-    serializer_class = ProductoSerializer
+class ProductoViewSet(APIView):
     
-class ProductoView(generics.ListAPIView):
-    queryset = Producto.objects.all()
-    serializer_class = ProductoSerializer
+    def get(self,request,producto_id):
+        dataProducto = Producto.objects.get(pk=producto_id)
+        serProducto = ProductoSerializer(dataProducto)
+        return Response(serProducto.data)
+    
+    def put(self,request,producto_id):
+        dataProducto = Producto.objects.get(pk=producto_id)
+        serProducto = ProductoSerializer(dataProducto,data=request.data)
+        serProducto.is_valid(raise_exception=True)
+        serProducto.save()
+        return Response(serProducto.data)
+    
+    def delete(self,request,producto_id):
+        dataProducto = Producto.objects.get(pk=producto_id)
+        serProducto = ProductoSerializer(dataProducto)
+        dataProducto.delete()
+        return Response(serProducto.data)
+
+    
+class ProductoView(APIView):
+    def get(self,request):
+        dataProducto = Producto.objects.all()
+        serProductos = ProductoSerializer(dataProducto,many=True)
+        return Response(serProductos.data)
+    
+    def post(self,request):
+        serProducto = ProductoSerializer(data=request.data)
+        serProducto.is_valid(raise_exception=True)
+        serProducto.save()
+        
+        return Response(serProducto.data)

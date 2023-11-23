@@ -10,7 +10,7 @@ class Categoria(models.Model):
     
 class Producto(models.Model):
     categoria = models.ForeignKey(Categoria,on_delete=models.RESTRICT)
-    nombre = models.CharField(max_length=200)
+    descripcion = models.CharField(max_length=200)
     precio = models.DecimalField(max_digits=6,decimal_places=2)
     stock = models.IntegerField(default=0)
     
